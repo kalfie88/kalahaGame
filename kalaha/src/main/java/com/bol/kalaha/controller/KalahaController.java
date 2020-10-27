@@ -25,7 +25,7 @@ public class KalahaController {
 
         }
 
-        return ResponseEntity.ok().body(kalahaService.play(request));
+        return ResponseEntity.ok().body(kalahaService.playGame(request));
 
     }
 }
