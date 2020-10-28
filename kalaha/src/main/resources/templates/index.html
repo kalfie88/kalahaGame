@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Kalaha</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+
+    <style>
+        table, th, td {
+          border: 1px solid black;
+        }
+        th, td {
+          padding: 15px;
+          text-align: center;
+        }
+        #t01 {
+          width: 100%;
+          background-color: #e6ccff;
+        }
+    </style>
+
+</head>
+
+<body>
+<div class="container my-5">
+    <h3>Kalaha Game</h3>
+    <div class="card">
+        <div class="card-body">
+            <div class="col-md-10">
+                <form action="#" th:action="@{/play}" th:object="${request}" method="post">
+
+                    <div class="row">
+                        <div class="form-group col-md-8">
+                            <label for="stones" class="col-form-label">Player 1</label>
+                            <input type="text" th:field="*{stones}" class="form-control"
+                                   id="stones" placeholder="e.g. stones"/>
+                        </div>
+                            <table id="t01">
+                                <tr>
+                                    <th rowspan="3">Mancala P2</th>
+                                </tr>
+                                <tr>
+                                    <th>Pit 6</th>
+                                    <th>Pit 5</th>
+                                    <th>Pit 4</th>
+                                    <th>Pit 3</th>
+                                    <th>Pit 2</th>
+                                    <th>Pit 1</th>
+                                    <th rowspan="3">Mancala P1</th>
+                                </tr>
+                                <tr>
+                                    <th>Pit 1</th>
+                                    <th>Pit 2</th>
+                                    <th>Pit 3</th>
+                                    <th>Pit 4</th>
+                                    <th>Pit 5</th>
+                                    <th>Pit 6</th>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-md-6">
+                            <input type="submit" class="btn btn-primary" value=" Play ">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

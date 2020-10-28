@@ -1,14 +1,14 @@
 package com.bol.kalaha.entities;
 
-import lombok.Builder;
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@Component
 @Data
-@Builder
 public class Board {
 
     private static final int NUM_STONES = 6;

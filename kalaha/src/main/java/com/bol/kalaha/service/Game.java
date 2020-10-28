@@ -3,12 +3,16 @@ package com.bol.kalaha.service;
 import com.bol.kalaha.entities.Board;
 import com.bol.kalaha.entities.Play;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 @RequiredArgsConstructor
 public class Game {
 
+    @Autowired
     private final Board board;
     private int pitIndex;
     private int stones;
