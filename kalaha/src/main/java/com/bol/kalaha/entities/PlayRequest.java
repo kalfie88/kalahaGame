@@ -5,13 +5,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author kalfie
+ */
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Play {
+public class PlayRequest {
 
     private int stones;
     private int pitIndex;
     private boolean isPlayerOne;
+    private Board board;
+
 }

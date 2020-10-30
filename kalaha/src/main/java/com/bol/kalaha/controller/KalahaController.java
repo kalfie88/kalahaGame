@@ -1,14 +1,20 @@
 package com.bol.kalaha.controller;
 
-import com.bol.kalaha.entities.Board;
-import com.bol.kalaha.entities.Play;
+import com.bol.kalaha.entities.PlayRequest;
+import com.bol.kalaha.entities.PlayResponse;
 import com.bol.kalaha.service.KalahaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
+/**
+ * @author kalfie
+ */
 
 @Controller
 @RequestMapping("/")
@@ -18,41 +24,33 @@ public class KalahaController {
     @Autowired
     private final KalahaService kalahaService;
 
-    private Board board;
-
     /**
      * Endpoint to call the index page
+     *
      * @param model
      * @return String
      */
     @RequestMapping
     public String initGame(Model model) {
-        model.addAttribute("request", new Play());
+        model.addAttribute("request", new PlayRequest());
 
         return "index";
     }
 
     /**
-     * Endpoint to connect with the service and retrieve the
-     * photos according to the search criteria
-     * @param request
-     * @return String
+     * Starts the game
+     *
+     * @param request play of the current player
+     * @return the board updated
      */
-    @RequestMapping(path = "/play", method = RequestMethod.POST)
-    public String getAllPhotos(Play request) {
-        board = kalahaService.playGame(request);
-
-        return "redirect:/photos"; //TODO
-    }
-
-  /*  @PostMapping(value = "/play")
-    public ResponseEntity<?> play(@RequestBody Play request) {
+    @PostMapping(value = "/play")
+    public ResponseEntity<PlayResponse> play(@RequestBody PlayRequest request) {
         if (request == null) {
             return ResponseEntity.badRequest().build();
 
         }
 
         return ResponseEntity.ok().body(kalahaService.playGame(request));
+    }
 
-    }*/
 }
