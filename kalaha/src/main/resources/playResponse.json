@@ -1,11 +1,13 @@
 {
-  "board": {
+  "board":
+  {
     "onePit":[6,0,6,6,6,6],
     "twoPit":[6,0,6,6,6,6],
     "mancalaOne":0,
     "mancalaTwo":0,
     "winner":null,
-    "playerOne":true},
+    "playerOne":true
+  },
   "turn":"Player 2",
   "message":"Next turn -> Player 2"
 }
