@@ -1,12 +1,13 @@
 package com.bol.kalaha.controller;
 
-import com.bol.kalaha.entities.Board;
 import com.bol.kalaha.entities.Play;
 import com.bol.kalaha.service.KalahaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -36,30 +37,27 @@ public class KalahaController {
         return "index";
     }
 
-
+    /**
+     * Submits a play
+     *
+     * @param request the values of the play
+     * @return directs to index
+     */
     @RequestMapping(path = "/play", method = RequestMethod.POST)
     public String play(Play request) {
         response = kalahaService.playGame(request);
-
-        return "redirect:/display";
-    }
-
-    @RequestMapping(path = {"/display"})
-    public String displayPlay(Model model) {
-        Board board = response.getBoard();
-        model.addAttribute("board", board);
 
         return "redirect:/";
     }
 
     /**
-     * Starts the game
+     * Endpoint to connect to the game
      *
      * @param request play of the current player
      * @return the board updated
      */
-   /* @RequestMapping(path = "/play", method = RequestMethod.POST)
-    public ResponseEntity<Play> play(Play request) {
+    @PostMapping(path = "/kalaha/v1")
+    public ResponseEntity<Play> playEndpoint(Play request) {
         if (request == null) {
             return ResponseEntity.badRequest().build();
 
@@ -67,5 +65,5 @@ public class KalahaController {
 
         return ResponseEntity.ok().body(kalahaService.playGame(request));
     }
-*/
+
 }
