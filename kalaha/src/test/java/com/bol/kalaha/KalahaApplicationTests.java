@@ -1,8 +1,7 @@
 package com.bol.kalaha;
 
 import com.bol.kalaha.entities.Board;
-import com.bol.kalaha.entities.PlayRequest;
-import com.bol.kalaha.entities.PlayResponse;
+import com.bol.kalaha.entities.Play;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.google.gson.Gson;
@@ -76,30 +75,29 @@ public class KalahaApplicationTests {
     @Test
     public void play_valid() throws Exception {
         int stones = 6;
-        int pitIndex = 2;
-        boolean isPlayerOne = true;
-        List<Integer> onePit = Arrays.asList(1, 2, 3, 4, 5, 6);
-        List<Integer> twoPit = Arrays.asList(0, 0, 0, 0, 0, 0);
-
+        int pitIndex = 1;
+        List<Integer> onePit = Arrays.asList(6, 0, 6, 6, 6, 6);
+        List<Integer> twoPit = Arrays.asList(6, 0, 6, 6, 6, 6);
         Board board = new Board();
-        board.setMancalaOne(10);
-        board.setMancalaTwo(2);
+        board.setMancalaOne(0);
+        board.setMancalaTwo(0);
         board.setOnePit(onePit);
         board.setTwoPit(twoPit);
-        board.setWinner("one");
+        board.setWinner(null);
 
-        PlayRequest request = PlayRequest.builder()
+        Play play = Play.builder()
                 .stones(stones)
                 .pitIndex(pitIndex)
-                .isPlayerOne(isPlayerOne)
+                .isPlayerOne(true)
                 .board(board)
+                .message("Next turn -> Player 2")
                 .build();
 
-        PlayResponse expectedResponse = gson.fromJson(this.expectedJson, PlayResponse.class);
+        Play expectedResponse = gson.fromJson(this.expectedJson, Play.class);
 
         mvc.perform(MockMvcRequestBuilders.post("/play")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(play)))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(expectedResponse)));
 

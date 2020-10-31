@@ -1,16 +1,14 @@
 package com.bol.kalaha.controller;
 
-import com.bol.kalaha.entities.PlayRequest;
-import com.bol.kalaha.entities.PlayResponse;
+import com.bol.kalaha.entities.Board;
+import com.bol.kalaha.entities.Play;
 import com.bol.kalaha.service.KalahaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * @author kalfie
@@ -23,18 +21,35 @@ public class KalahaController {
 
     @Autowired
     private final KalahaService kalahaService;
+    private Play response;
 
     /**
      * Endpoint to call the index page
      *
-     * @param model
+     * @param model to bind the values to the UI
      * @return String
      */
     @RequestMapping
     public String initGame(Model model) {
-        model.addAttribute("request", new PlayRequest());
+        model.addAttribute("request", new Play());
 
         return "index";
+    }
+
+
+    @RequestMapping(path = "/play", method = RequestMethod.POST)
+    public String play(Play request) {
+        response = kalahaService.playGame(request);
+
+        return "redirect:/display";
+    }
+
+    @RequestMapping(path = {"/display"})
+    public String displayPlay(Model model) {
+        Board board = response.getBoard();
+        model.addAttribute("board", board);
+
+        return "redirect:/";
     }
 
     /**
@@ -43,8 +58,8 @@ public class KalahaController {
      * @param request play of the current player
      * @return the board updated
      */
-    @RequestMapping(path = "/play", method = RequestMethod.POST)
-    public ResponseEntity<PlayResponse> play(PlayRequest request) {
+   /* @RequestMapping(path = "/play", method = RequestMethod.POST)
+    public ResponseEntity<Play> play(Play request) {
         if (request == null) {
             return ResponseEntity.badRequest().build();
 
@@ -52,5 +67,5 @@ public class KalahaController {
 
         return ResponseEntity.ok().body(kalahaService.playGame(request));
     }
-
+*/
 }

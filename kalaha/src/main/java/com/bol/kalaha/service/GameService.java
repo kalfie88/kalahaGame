@@ -1,8 +1,7 @@
 package com.bol.kalaha.service;
 
 import com.bol.kalaha.entities.Board;
-import com.bol.kalaha.entities.PlayRequest;
-import com.bol.kalaha.entities.PlayResponse;
+import com.bol.kalaha.entities.Play;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,35 +31,30 @@ public class GameService {
      * @param request play of the correspondent player
      * @return playResponse with the board status
      */
-    public PlayResponse performPlay(PlayRequest request) {
+    public Play performPlay(Play request) {
         boolean isGameOver;
         String message;
-        String player;
         initializePlay(request);
 
         if (board.isPlayerOne()) {
             isGameOver = makeMove(board.getOnePit(), board.getTwoPit(), true);
-            player = "Player 1";
+            if (isGameOver)
+                message = "Game Over!! " + board.getWinner();
+            else
+                message = "Next turn -> Player 2";
+
+        } else {
+            isGameOver = makeMove(board.getTwoPit(), board.getOnePit(), false);
 
             if (isGameOver)
                 message = "Game Over!! " + board.getWinner();
             else
                 message = "Next turn -> Player 1";
 
-        } else {
-            isGameOver = makeMove(board.getTwoPit(), board.getOnePit(), false);
-            player = "Player 2";
-
-            if (isGameOver)
-                message = "Game Over!! " + board.getWinner();
-            else
-                message = "Next turn -> Player 2";
-
         }
 
-        return PlayResponse.builder()
+        return Play.builder()
                 .board(board)
-                .turn(player)
                 .message(message)
                 .build();
     }
@@ -70,7 +64,7 @@ public class GameService {
      *
      * @param request will bring the play the current player is doing
      */
-    private void initializePlay(PlayRequest request) {
+    private void initializePlay(Play request) {
         Optional.ofNullable(request.getBoard()).ifPresent(b -> board = b);
         Optional.of(request.getPitIndex()).ifPresent(i -> pitIndex = i);
         Optional.of(request.getStones()).ifPresent(s -> stones = s);
@@ -99,11 +93,20 @@ public class GameService {
     private Boolean makeMove(List<Integer> firstPit, List<Integer> secondPit, boolean isOne) {
         int j = 0;
         int i = pitIndex;
+        boolean extraTurn = false;
 
         while (stones > 0) {
 
-            if (i < firstPit.size()) { //Normal iteration
-                //If is the last stone and the pit was empty
+            if (i <= firstPit.size()) {
+                //If it's the last pit and the last stone goes into the mancala
+                if (i == firstPit.size() && i == stones - 1) {
+                    updateMancala(isOne, 1);
+                    board.setPlayerOne(isOne);
+                    extraTurn = true;
+                    break;
+                }
+
+                //If it's the last stone and the pit was empty
                 if (i == stones && firstPit.get(i) == 0) {
                     takeStones(i, firstPit, secondPit, isOne);
                 }
@@ -112,12 +115,7 @@ public class GameService {
                 i++;
                 stones--;
 
-            } else if (i == firstPit.size() && i == stones - 1) {
-                //If the last stone goes into the mancala
-                updateMancala(isOne, 1);
-                board.setPlayerOne(isOne);
-
-            } else {
+            }  else {
                 secondPit.set(j, secondPit.get(j) + 1);
                 j++;
                 stones--;
@@ -130,7 +128,9 @@ public class GameService {
         }
 
         updatePits(firstPit, secondPit, isOne);
-        board.setPlayerOne(!isOne);
+        if (!extraTurn)
+            board.setPlayerOne(!isOne);
+
         return isGameOver();
     }
 

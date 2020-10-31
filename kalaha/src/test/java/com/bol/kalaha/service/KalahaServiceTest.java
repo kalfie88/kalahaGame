@@ -1,8 +1,7 @@
 package com.bol.kalaha.service;
 
 import com.bol.kalaha.entities.Board;
-import com.bol.kalaha.entities.PlayRequest;
-import com.bol.kalaha.entities.PlayResponse;
+import com.bol.kalaha.entities.Play;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -31,33 +30,28 @@ class KalahaServiceTest {
     @Test
     void playGame_valid() {
         int stones = 6;
-        int pitIndex = 2;
+        int pitIndex = 1;
         boolean isPlayerOne = true;
-        List<Integer> onePit = Arrays.asList(1, 2, 3, 4, 5, 6);
-        List<Integer> twoPit = Arrays.asList(0, 0, 0, 0, 0, 0);
+        List<Integer> onePit = Arrays.asList(6, 0, 6, 6, 6, 6);
+        List<Integer> twoPit = Arrays.asList(6, 0, 6, 6, 6, 6);
         Board board = new Board();
-        board.setMancalaOne(10);
-        board.setMancalaTwo(2);
+        board.setMancalaOne(0);
+        board.setMancalaTwo(0);
         board.setOnePit(onePit);
         board.setTwoPit(twoPit);
-        board.setWinner("one");
+        board.setWinner(null);
 
-        PlayRequest request = PlayRequest.builder()
+        Play play = Play.builder()
                 .stones(stones)
                 .pitIndex(pitIndex)
                 .isPlayerOne(isPlayerOne)
                 .board(board)
+                .message("Next turn -> Player 2")
                 .build();
 
-        PlayResponse expectedResponse = PlayResponse.builder()
-                .board(board)
-                .turn("")
-                .message("Game Over!!")
-                .build();
-
-        when(gameService.performPlay(request)).thenReturn(expectedResponse);
-        PlayResponse response = kalahaService.playGame(request);
-        assertThat(response).isEqualTo(expectedResponse);
+        when(gameService.performPlay(play)).thenReturn(play);
+        Play response = kalahaService.playGame(play);
+        assertThat(response).isEqualTo(play);
     }
 
 }

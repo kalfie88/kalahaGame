@@ -1,7 +1,6 @@
 package com.bol.kalaha.service;
 
-import com.bol.kalaha.entities.PlayRequest;
-import com.bol.kalaha.entities.PlayResponse;
+import com.bol.kalaha.entities.Play;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,7 @@ public class KalahaService {
      * @param request play the current player did
      * @return the updated board after the play
      */
-    public PlayResponse playGame(PlayRequest request) {
+    public Play playGame(Play request) {
 
         return game.performPlay(request);
     }
