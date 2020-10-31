@@ -43,8 +43,8 @@ public class KalahaController {
      * @param request play of the current player
      * @return the board updated
      */
-    @PostMapping(value = "/play")
-    public ResponseEntity<PlayResponse> play(@RequestBody PlayRequest request) {
+    @RequestMapping(path = "/play", method = RequestMethod.POST)
+    public ResponseEntity<PlayResponse> play(PlayRequest request) {
         if (request == null) {
             return ResponseEntity.badRequest().build();
 
