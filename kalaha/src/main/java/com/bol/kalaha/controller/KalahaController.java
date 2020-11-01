@@ -28,7 +28,7 @@ public class KalahaController {
      * Endpoint to call the index page
      *
      * @param model to bind the values to the UI
-     * @return String
+     * @return returns the index page
      */
     @RequestMapping
     public String initGame(Model model) {
@@ -41,7 +41,7 @@ public class KalahaController {
      * Submits a play
      *
      * @param request the values of the play
-     * @return directs to index
+     * @return redirects to index
      */
     @RequestMapping(path = "/play", method = RequestMethod.POST)
     public String play(Play request) {

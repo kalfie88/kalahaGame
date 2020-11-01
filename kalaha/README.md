@@ -127,6 +127,9 @@ http://localhost:8080/
 
 ```
 
+#Improvements
+A functional UI that allows to follow the logic of the game.
+
 ## Author
 
 * **Katherine Alfaro Ramirez** - *Personal GitHub ->* [kalfie88](https://github.com/kalfie88)

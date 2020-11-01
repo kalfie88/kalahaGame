@@ -33,12 +33,10 @@ class KalahaServiceTest {
     }
 
     @Test
-    void playGame_valid() {
-        int stones = 6;
-        int pitIndex = 1;
-        boolean isPlayerOne = true;
-        List<Integer> onePit = Arrays.asList(6, 0, 6, 6, 6, 6);
-        List<Integer> twoPit = Arrays.asList(6, 0, 6, 6, 6, 6);
+    void playGameValid() {
+        List<Integer> onePit = Arrays.asList(6, 0, 7, 7, 7, 7);
+        List<Integer> twoPit = Arrays.asList(7, 7, 6, 6, 6, 6);
+
         Board board = new Board();
         board.setMancalaOne(0);
         board.setMancalaTwo(0);
@@ -47,16 +45,23 @@ class KalahaServiceTest {
         board.setWinner(null);
 
         Play play = Play.builder()
-                .stones(stones)
-                .pitIndex(pitIndex)
-                .isPlayerOne(isPlayerOne)
+                .stones(6)
+                .pitIndex(1)
+                .isPlayerOne(true)
                 .board(board)
                 .message("Next turn -> Player 2")
                 .build();
 
         when(gameService.performPlay(play)).thenReturn(play);
         Play response = kalahaService.playGame(play);
+
         assertThat(response).isEqualTo(play);
     }
 
+    @Test
+    void playGameInvalid() {
+        Play response = kalahaService.playGame(null);
+
+        assertThat(response.getMessage()).isEqualTo("An error occurred: Request cannot be null");
+    }
 }

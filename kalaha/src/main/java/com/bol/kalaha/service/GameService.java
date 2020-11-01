@@ -97,25 +97,24 @@ public class GameService {
 
         while (stones > 0) {
 
-            if (i <= firstPit.size()) {
-                //If it's the last pit and the last stone goes into the mancala
-                if (i == firstPit.size() && i == stones - 1) {
-                    updateMancala(isOne, 1);
-                    board.setPlayerOne(isOne);
-                    extraTurn = true;
-                    break;
-                }
-
-                //If it's the last stone and the pit was empty
-                if (i == stones && firstPit.get(i) == 0) {
-                    takeStones(i, firstPit, secondPit, isOne);
-                }
-
+            if (i < firstPit.size()) {
                 firstPit.set(i, firstPit.get(i) + 1);
                 i++;
                 stones--;
+            }
 
-            }  else {
+            //If it's the last stone and the pit was empty
+            if (i == stones && firstPit.get(i) == 0) {
+                takeStones(i, firstPit, secondPit, isOne);
+            }
+
+            //If it's the last pit and the last stone goes into the mancala
+            if (i == firstPit.size() && i == stones - 1) {
+                updateMancala(isOne, 1);
+                board.setPlayerOne(isOne);
+                extraTurn = true;
+
+            } else {
                 secondPit.set(j, secondPit.get(j) + 1);
                 j++;
                 stones--;
@@ -156,6 +155,7 @@ public class GameService {
     /**
      * Check if one of the player has all of it's pits empty,
      * if it does it's game over.
+     *
      * @return flag if the game is over
      */
     private boolean isGameOver() {

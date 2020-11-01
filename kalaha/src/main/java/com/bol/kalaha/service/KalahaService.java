@@ -21,6 +21,10 @@ public class KalahaService {
      * @return the updated board after the play
      */
     public Play playGame(Play request) {
+        if (request == null)
+            return Play.builder()
+                    .message("An error occurred: Request cannot be null")
+                    .build();
 
         return game.performPlay(request);
     }

@@ -32,9 +32,6 @@ public class KalahaControllerTest {
 
     @Test
     public void play_OK() {
-        int stones = 6;
-        int pitIndex = 2;
-        boolean isPlayerOne = true;
         List<Integer> onePit = Arrays.asList(1, 2, 3, 4, 5, 6);
         List<Integer> twoPit = Arrays.asList(0, 0, 0, 0, 0, 0);
 
@@ -43,22 +40,21 @@ public class KalahaControllerTest {
         board.setMancalaTwo(2);
         board.setOnePit(onePit);
         board.setTwoPit(twoPit);
-        board.setWinner("one");
+        board.setWinner("Congratulations Player One you are the winner");
 
         Play request = Play.builder()
-                .stones(stones)
-                .pitIndex(pitIndex)
-                .isPlayerOne(isPlayerOne)
+                .stones(6)
+                .pitIndex(2)
+                .isPlayerOne(true)
                 .board(board)
                 .build();
 
         Play expectedResponse = Play.builder()
                 .board(board)
-                .message("Game Over!!")
+                .message("Game Over!! Congratulations Player One you are the winner")
                 .build();
 
         when(kalahaService.playGame(request)).thenReturn(expectedResponse);
-
         ResponseEntity<Play> response = kalahaController.playEndpoint(request);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
